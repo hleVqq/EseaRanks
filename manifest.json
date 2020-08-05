@@ -1,0 +1,19 @@
+{
+    "name": "ESEA Ranks",
+    "version": "1.0",
+    "description": "Shows player ranks on match pages",
+    "permissions": ["tabs", "webNavigation", "*://play.esea.net/*"],
+    "background": 
+    {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "content_scripts": 
+    [
+        {
+            "matches": ["*://play.esea.net/*"],
+            "js": ["content.js"]
+        }
+    ],
+    "manifest_version": 2
+}
