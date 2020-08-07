@@ -95,8 +95,8 @@ async function fetchRank(node)
 
     if (json.data.rank.current)
     {
-        const rank = json.data.rank.current ? json.data.rank.current.rank : '?';
-        const mmr = json.data.rank.current ? json.data.rank.current.mmr : '?';
+        const rank = json.data.rank.current.rank;
+        const mmr = json.data.rank.current.mmr;
 
         const td = node.parentNode.parentNode.parentNode;
         const rTd = td.nextSibling;
