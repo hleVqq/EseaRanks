@@ -2,7 +2,7 @@
     "name": "ESEA Ranks",
     "version": "1.0",
     "description": "Shows player ranks on match pages",
-    "permissions": ["tabs", "webNavigation", "*://play.esea.net/*"],
+    "permissions": ["webNavigation", "*://play.esea.net/*"],
     "background": 
     {
         "scripts": ["background.js"],
@@ -15,5 +15,15 @@
             "js": ["content.js"]
         }
     ],
-    "manifest_version": 2
+    "manifest_version": 2,
+    "icons": 
+    { 
+        "16": "esea.png",
+        "48": "esea.png",
+        "128": "esea.png" 
+    },
+    "browser_action":
+    {
+        "default_popup": "popup.html"
+    }
 }
