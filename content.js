@@ -1,17 +1,18 @@
-//console.log('ESEA Ranks');
 onMessage();
 chrome.extension.onMessage.addListener(onMessage);
 
 function onMessage()
 {
     if (!location.href.includes('/match/'))
-    {
-        //console.log('[ESEA Ranks] Non-match URL, ignoring...');
         return;
-    }
 
-    //console.log('[ESEA Ranks] Match URL, fetching ranks...');
+    hookDomChanges();
 
+    return true;
+}
+
+function hookDomChanges()
+{
     new MutationObserver(function(_, observer)
     {
         if (!document.querySelector('table'))
@@ -21,84 +22,99 @@ function onMessage()
         displayRanks();
     })
     .observe(document.querySelector('#root'), {childList: true, subtree: true});
-
-    return true;
 }
 
 function displayRanks()
 {
     modifyTables();
-
-    const nodes = document.querySelectorAll('tbody a.TextLink');
-
-    for (let i = 0; i < nodes.length; i++)
-    {
-        const node = nodes[i];
-
-        if (node.href.includes('/users/'))
-            fetchRank(node);
-    }
+    fetchRanks();
 }
 
 function modifyTables()
 {
-    const groupings = document.querySelectorAll('.groupings > th:nth-child(2)');
+    modifyGroupings();
+    modifyHeaders();
+    modifyBodies();
+}
 
-    for (let i = 0; i < groupings.length; i++)
+function modifyGroupings()
+{
+    const basicHeaders = document.querySelectorAll('.groupings > th:nth-child(2)');
+
+    for (let i = 0; i < basicHeaders.length; i++)
     {
-        const th = groupings[i];
+        const basicHeader = basicHeaders[i];
 
-        const rTh = th.cloneNode();
-        rTh.innerText = 'Rank';
-        rTh.setAttribute('colspan', 2);
-        th.parentNode.insertBefore(rTh, th);
+        const rankHeader = basicHeader.cloneNode();
+        rankHeader.innerText = 'Rank';
+        rankHeader.setAttribute('colspan', 2);
+        basicHeader.parentNode.insertBefore(rankHeader, basicHeader);
     }
+}
 
-    const killThs = document.querySelectorAll('thead tr:last-child th:nth-child(2)');
+function modifyHeaders()
+{
+    const killHeaders = document.querySelectorAll('thead tr:last-child th:nth-child(2)');
 
-    for (let i = 0; i < killThs.length; i++)
+    for (let i = 0; i < killHeaders.length; i++)
     {
-        const th = killThs[i];
+        const killHeader = killHeaders[i];
 
-        const rTh = th.cloneNode();
-        rTh.innerText = 'R';
-        th.parentNode.insertBefore(rTh, th);
+        const rankHeader = killHeader.cloneNode();
+        rankHeader.innerText = 'R';
+        killHeader.parentNode.insertBefore(rankHeader, killHeader);
 
-        const mmrTh = th.nextSibling.cloneNode();
-        mmrTh.innerText = 'MMR';
-        th.parentNode.insertBefore(mmrTh, th);
+        const mmrHeader = killHeader.nextSibling.cloneNode();
+        mmrHeader.innerText = 'MMR';
+        killHeader.parentNode.insertBefore(mmrHeader, killHeader);
     }
+}
 
-    const allTbodies  = document.querySelectorAll('tbody');
-    let tbodies = [];
+function modifyBodies()
+{
+    const allBodies  = document.querySelectorAll('tbody');
+    let bodies = [];
     
-    switch (allTbodies.length)
+    switch (allBodies.length)
     {
-        case 3: tbodies = [allTbodies[0], allTbodies[2]]; break;
-        case 4: tbodies = [allTbodies[2], allTbodies[3]]; break;
+        case 3: bodies = [allBodies[0], allBodies[2]]; break;
+        case 4: bodies = [allBodies[2], allBodies[3]]; break;
 
-        default: tbodies = allTbodies; break;
+        default: bodies = allBodies; break;
     }
 
-    for (let i = 0; i < tbodies.length; i++)
+    for (let i = 0; i < bodies.length; i++)
     {
-        const tbody = tbodies[i];
+        const tbody = bodies[i];
         tbody.classList.add('esea-ranks-tbody');
     }
     
-    const killTds = document.querySelectorAll('.Block .esea-ranks-tbody tr td:nth-child(2)');
+    const killDatas = document.querySelectorAll('.Block .esea-ranks-tbody tr td:nth-child(2)');
 
-    for (let i = 0; i < killTds.length; i++)
+    for (let i = 0; i < killDatas.length; i++)
     {
-        const td = killTds[i];
+        const killData = killDatas[i];
 
-        const rTd = td.cloneNode();
-        rTd.innerText = 'N/A';
-        td.parentNode.insertBefore(rTd, td);
+        const rankData = killData.cloneNode();
+        rankData.innerText = 'N/A';
+        killData.parentNode.insertBefore(rankData, killData);
 
-        const mmrTd = td.nextSibling.cloneNode();
-        mmrTd.innerText = 'N/A';
-        td.parentNode.insertBefore(mmrTd, td);
+        const mmrData = killData.nextSibling.cloneNode();
+        mmrData.innerText = 'N/A';
+        killData.parentNode.insertBefore(mmrData, killData);
+    }
+}
+
+function fetchRanks()
+{
+    const playerLinkNodes = document.querySelectorAll('tbody a.TextLink');
+
+    for (let i = 0; i < playerLinkNodes.length; i++)
+    {
+        const node = playerLinkNodes[i];
+
+        if (node.href.includes('/users/'))
+            fetchRank(node);
     }
 }
 
