@@ -42,6 +42,18 @@ function displayRanks()
 
 function modifyTables()
 {
+    const groupings = document.querySelectorAll('.groupings > th:nth-child(2)');
+
+    for (let i = 0; i < groupings.length; i++)
+    {
+        const th = groupings[i];
+
+        const rTh = th.cloneNode();
+        rTh.innerText = 'Rank';
+        rTh.setAttribute('colspan', 2);
+        th.parentNode.insertBefore(rTh, th);
+    }
+
     const killThs = document.querySelectorAll('thead tr:last-child th:nth-child(2)');
 
     for (let i = 0; i < killThs.length; i++)
@@ -52,13 +64,21 @@ function modifyTables()
         rTh.innerText = 'R';
         th.parentNode.insertBefore(rTh, th);
 
-        const mmrTh = th.cloneNode();
+        const mmrTh = th.nextSibling.cloneNode();
         mmrTh.innerText = 'MMR';
         th.parentNode.insertBefore(mmrTh, th);
     }
 
     const allTbodies  = document.querySelectorAll('tbody');
-    const tbodies = [allTbodies[0], allTbodies[2]];
+    let tbodies = [];
+    
+    switch (allTbodies.length)
+    {
+        case 3: tbodies = [allTbodies[0], allTbodies[2]]; break;
+        case 4: tbodies = [allTbodies[2], allTbodies[3]]; break;
+
+        default: tbodies = allTbodies; break;
+    }
 
     for (let i = 0; i < tbodies.length; i++)
     {
@@ -66,7 +86,7 @@ function modifyTables()
         tbody.classList.add('esea-ranks-tbody');
     }
     
-    const killTds = document.querySelectorAll('.esea-ranks-tbody tr td:nth-child(2)');
+    const killTds = document.querySelectorAll('.Block .esea-ranks-tbody tr td:nth-child(2)');
 
     for (let i = 0; i < killTds.length; i++)
     {
@@ -76,7 +96,7 @@ function modifyTables()
         rTd.innerText = 'N/A';
         td.parentNode.insertBefore(rTd, td);
 
-        const mmrTd = td.cloneNode();
+        const mmrTd = td.nextSibling.cloneNode();
         mmrTd.innerText = 'N/A';
         td.parentNode.insertBefore(mmrTd, td);
     }

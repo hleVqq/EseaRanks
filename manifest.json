@@ -1,7 +1,7 @@
 {
     "name": "ESEA Ranks",
-    "version": "1.0",
-    "description": "Shows player ranks on match pages",
+    "version": "1.2",
+    "description": "Shows player ranks & MMR on match pages",
     "permissions": ["webNavigation", "*://play.esea.net/*"],
     "background": 
     {
