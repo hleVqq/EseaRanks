@@ -55,10 +55,7 @@ function modifyGroupings()
 function modifyHeaders()
 {
     const allHeaders = document.querySelectorAll('thead');
-    let headers = [];
-
-    if (allHeaders.length > 2)
-        headers = [allHeaders[allHeaders.length - 2], allHeaders[allHeaders.length - 1]];
+    const headers = [allHeaders[allHeaders.length - 2], allHeaders[allHeaders.length - 1]];
     
     for (let i = 0; i < headers.length; i++)
     {

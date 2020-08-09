@@ -1,6 +1,6 @@
 {
     "name": "ESEA Ranks",
-    "version": "1.5",
+    "version": "1.6",
     "description": "Shows player ranks & MMR on match pages",
     "permissions": ["webNavigation", "*://play.esea.net/*"],
     "background": 
