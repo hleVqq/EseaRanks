@@ -54,7 +54,19 @@ function modifyGroupings()
 
 function modifyHeaders()
 {
-    const killHeaders = document.querySelectorAll('thead > tr:last-child > th:nth-child(2)');
+    const allHeaders = document.querySelectorAll('thead');
+    let headers = [];
+
+    if (allHeaders.length > 2)
+        headers = [allHeaders[allHeaders.length - 2], allHeaders[allHeaders.length - 1]];
+    
+    for (let i = 0; i < headers.length; i++)
+    {
+        const header = headers[i];
+        header.classList.add('esea-ranks-thead');
+    }
+
+    const killHeaders = document.querySelectorAll('.esea-ranks-thead > tr:last-child > th:nth-child(2)');
 
     for (let i = 0; i < killHeaders.length; i++)
     {
@@ -72,7 +84,7 @@ function modifyHeaders()
 
 function modifyBodies()
 {
-    const allBodies  = document.querySelectorAll('tbody');
+    const allBodies = document.querySelectorAll('tbody');
     let bodies = [];
     
     switch (allBodies.length)
